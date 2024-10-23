@@ -1,0 +1,6 @@
+[submodule "scss-support-backend"]
+	path = scss-support-backend
+	url = git@bitbucket.org:team_sumomedia/scss-support-backend.git
+[submodule "scss-support-frontend"]
+	path = scss-support-frontend
+	url = git@bitbucket.org:team_sumomedia/scss-support-frontend.git

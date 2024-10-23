@@ -1,6 +1,7 @@
 # scss-support
-> The base respository for SCSS web app
-> Copyright 2024
+> The base respository for SCSS web app  
+> &copy; 2024 PageOne247  
+> Maintainer: tech7@sumomedia.co
 
 # Dev Notes
 You can utilise the shell scripts for adding and removing submodules. 

@@ -2,6 +2,7 @@
 !example/**
 storage/db-data/*
 workspace.code-workspace
+.env
 
 # SSL Challenge and Certificates
 nginx/challenge

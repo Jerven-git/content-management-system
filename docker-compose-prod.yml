@@ -1,58 +1,58 @@
 services:
-    frontend:
-        image: scss-support-frontend:dev
-        build:
-            context: ./scss-support-frontend
-            dockerfile: Dockerfile-production
-        restart: always
+  backend:
+    image: scss-support-backend:dev
+    build:
+      context: ./scss-support-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./scss-support-backend:/var/www/html
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/challenge:/home/challenge
+      - ./nginx/ssl:/etc/ssl/private
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./dist:/usr/share/nginx/html/dist
+      - ./scss-support-backend:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app-network
+
+  db:
+    platform: linux/x86_64
+    image: mysql:latest
+    restart: unless-stopped
+    volumes:
+      - ./storage/db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MYSQL_USER: ${USERNAME}
+      MYSQL_PASSWORD: ${PASSWORD}
+    networks:
+      - app-network
+  
+  phpmyadmin:
+        platform: linux/amd64
+        image: phpmyadmin:5
+        container_name: pma
+        depends_on:
+            - db
+        restart: unless-stopped
         environment:
-            HOST: '0.0.0.0'
-
-    backend:
-        image: scss-support-backend:dev
-        build:
-            context: ./scss-support-backend
-            dockerfile: Dockerfile-prod
-        restart: always
-        volumes:
-            - ./scss-support-backend:/var/www/html
-
-    nginx:
-        image: nginx:alpine
-        restart: always
-        volumes:
-            - ./nginx/conf.d:/etc/nginx/conf.d
-            - ./nginx/challenge:/home/challenge
-            - ./nginx/ssl:/etc/ssl/private
-        extra_hosts:
-            - host.docker.internal:host-gateway
+            PMA_HOST: db
+            PMA_PASSWORD: ${DB_ROOT_PASSWORD}
         ports:
-            - 80:80
-            - 443:443
+            - 8001:80
+        networks:
+            - app-network
 
-    db:
-        platform: linux/x86_64
-        image: mysql:5.7
-        restart: always
-        volumes:
-            - ./storage/db-data:/var/lib/mysql
-        environment:
-            MYSQL_DATABASE_FILE: /run/secrets/mysql_database
-            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_pw
-            MYSQL_USER_FILE: /run/secrets/mysql_user
-            MYSQL_PASSWORD_FILE: /run/secrets/mysql_pw
-        secrets:
-            - mysql_database
-            - mysql_root_pw
-            - mysql_user
-            - mysql_pw
-
-secrets:
-    mysql_database:
-        file: ./.secrets/mysql_database.txt
-    mysql_root_pw:
-        file: ./.secrets/mysql_root_pw.txt
-    mysql_user:
-        file: ./.secrets/mysql_user.txt
-    mysql_pw:
-        file: ./.secrets/mysql_pw.txt
+networks:
+  app-network:
+    driver: bridge

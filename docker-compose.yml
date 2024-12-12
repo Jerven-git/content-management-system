@@ -7,7 +7,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./scss-support-frontend:/home/node
-      - ./scss-support-frontend:/var/www/html
     environment:
       HOST: '0.0.0.0'
     networks:
@@ -28,10 +27,8 @@ services:
     image: nginx:alpine
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      # - ./dist:/usr/share/nginx/html/dist
-      # - ./nginx/challenge:/home/challenge
-      # - ./nginx/ssl:/etc/ssl/private
       - ./scss-support-backend:/var/www/html
+      - ./scss-support-frontend:/home/node
     ports:
       - 8000:80
     networks:
@@ -50,8 +47,22 @@ services:
       MYSQL_PASSWORD: ${PASSWORD}
     networks:
       - app-network
+  
+  phpmyadmin:
+        platform: linux/amd64
+        image: phpmyadmin:5
+        container_name: pma
+        depends_on:
+            - db
+        restart: unless-stopped
+        environment:
+            PMA_HOST: db
+            PMA_PASSWORD: ${DB_ROOT_PASSWORD}
+        ports:
+            - 8001:80
+        networks:
+            - app-network
 
-# Docker Networks
 networks:
   app-network:
     driver: bridge

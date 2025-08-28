@@ -4,3 +4,9 @@
 [submodule "scss-support-frontend"]
 	path = scss-support-frontend
 	url = git@bitbucket.org:team_sumomedia/scss-support-frontend.git
+[submodule "afia-backend"]
+	path = afia-backend
+	url = git@bitbucket.org:team_sumomedia/afia-backend.git
+[submodule "afia-frontend"]
+	path = afia-frontend
+	url = git@bitbucket.org:team_sumomedia/afia-frontend.git

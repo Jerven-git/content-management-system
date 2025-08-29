@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./afia-frontend:/home/bun/app
+      - ./afia-frontend:/home/node
     environment:
       HOST: '0.0.0.0'
     networks:

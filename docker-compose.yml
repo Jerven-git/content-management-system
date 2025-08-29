@@ -1,25 +1,25 @@
 services:
   frontend:
-    image: scss-support-frontend:dev
+    image: afia-frontend:dev
     build:
-      context: ./scss-support-frontend
+      context: ./afia-frontend
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./scss-support-frontend:/home/node
+      - ./afia-frontend:/home/bun/app
     environment:
       HOST: '0.0.0.0'
     networks:
       - app-network
 
   backend:
-    image: scss-support-backend:dev
+    image: afia-backend:dev
     build:
-      context: ./scss-support-backend
+      context: ./afia-backend
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./scss-support-backend:/var/www/html
+      - ./afia-backend:/var/www/html
     networks:
       - app-network
 
@@ -27,8 +27,8 @@ services:
     image: nginx:alpine
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./scss-support-backend:/var/www/html
-      - ./scss-support-frontend:/home/node
+      - ./afia-backend:/var/www/html
+      - ./afia-frontend:/home/node
     ports:
       - 8000:80
     networks:
@@ -41,10 +41,10 @@ services:
     volumes:
       - ./storage/db-data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: ${DATABASE}
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
-      MYSQL_USER: ${USERNAME}
-      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     networks:
       - app-network
   

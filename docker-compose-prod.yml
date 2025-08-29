@@ -1,12 +1,12 @@
 services:
   backend:
-    image: scss-support-backend:dev
+    image: afia-backend:dev
     build:
-      context: ./scss-support-backend
+      context: ./afia-backend
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./scss-support-backend:/var/www/html
+      - ./afia-backend:/var/www/html
     networks:
       - app-network
 
@@ -17,7 +17,7 @@ services:
       - ./nginx/ssl:/etc/ssl/private
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./dist:/usr/share/nginx/html/dist
-      - ./scss-support-backend:/var/www/html
+      - ./afia-backend:/var/www/html
     ports:
       - 80:80
       - 443:443

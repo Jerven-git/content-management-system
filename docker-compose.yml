@@ -29,7 +29,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./afia-backend:/var/www/html
-      - ./afia-frontend:/home/node
+      - ./afia-frontend:/app
     ports:
       - 8000:80
     networks:

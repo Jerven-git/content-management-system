@@ -5,10 +5,17 @@ services:
       context: ./afia-frontend
       dockerfile: Dockerfile
     restart: unless-stopped
+    ports:
+      - "3000:3000"      # Main dev server
+      - "24678:24678"    # HMR
     volumes:
       - ./afia-frontend:/app
+      - /app/node_modules
+      - /app/.nuxt
     environment:
       HOST: '0.0.0.0'
+      NODE_ENV: development
+      WATCHPACK_POLLING: true
     networks:
       - app-network
 

@@ -1,4 +1,4 @@
-# afia
+# cms
 > The base respository for SCSS web app  
 > &copy; 2024 PageOne247  
 > Maintainer: tech7@sumomedia.co
